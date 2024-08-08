@@ -1,0 +1,6 @@
+/Debug/*
+/Release/*
+*.ioc
+*ssh4github
+*ssh4github.pub
+
