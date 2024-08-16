@@ -19,7 +19,7 @@
 #include <stdint.h>
 
 /* Private includes ----------------------------------------------------------*/
-
+#include "../Tasks/LEDs/Led.h"
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
@@ -36,21 +36,11 @@
 int main(void)
 {
 
-	/* MCU Configuration--------------------------------------------------------*/
-//	__disable_irq();
-	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-
-
-	/* Configure the system clock */
-
-	/* Initialize all configured peripherals */
-
-//	__enable_irq();
-	/* Infinite loop */
-	/* USER CODE BEGIN WHILE */
+	InitMainLed();
 	while (1)
 	{
-
+		for (uint32_t idx = 0; idx <= 1000000; idx++);
+		Toggle();
 	}
 }
 
