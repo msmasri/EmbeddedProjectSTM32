@@ -59,7 +59,7 @@ static void InitLed(void)
 
 	/* Output speed medium*/
 	GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR5_0;
-	GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR5_1;
+	GPIOA->OSPEEDR &= ~GPIO_OSPEEDER_OSPEEDR5_1;
 
 	/* Pull-up/Down UP*/
 	GPIOA->PUPDR |= GPIO_PUPDR_PUPD5_0;
