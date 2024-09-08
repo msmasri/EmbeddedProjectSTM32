@@ -35,7 +35,7 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "DCMotorDriver.h"
 /* Private includes ----------------------------------------------------------*/
-#include "../../Core/Inc/stm32f446xx.h"
+
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
@@ -79,7 +79,7 @@ static void InitGPIOMotorDriver(void)
 	/* Enable port A*/
 	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
 
-	/* select output mode */
+	/* select Alternative function mode */
 	GPIOA->MODER &= ~GPIO_MODER_MODE1_0;
 	GPIOA->MODER |= GPIO_MODER_MODE1_1;
 
