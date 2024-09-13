@@ -1,12 +1,12 @@
 /*******************************************************************************
  * @file    DCMotorDriver.h
  * @author  sari
- * @email   
- * @website 
+ * @email
+ * @website
  * @date    Aug 16, 2024
- *          
- * @brief   
- * @note    
+ *
+ * @brief
+ * @note
  *
 @verbatim
 Copyright (C) on GitHub msmasri/stm32project, 2024
@@ -37,7 +37,10 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 
 /* Private typedef -----------------------------------------------------------*/
-
+typedef struct {
+  uint16_t DutyCycle;
+  uint16_t Period;
+} PWM_Buffer_Type;
 /* Private define ------------------------------------------------------------*/
 
 /* Private macro -------------------------------------------------------------*/
@@ -49,6 +52,5 @@ void InitMainDCMotorDriver(void);
 void ChangeSpeed(uint16_t *speed);
 uint32_t ReadMotorSpeed(void);
 /* External variables --------------------------------------------------------*/
-
 
 #endif /* TASKS_MOTORDRIVERUNIT_DCMOTORDRIVER_H_ */
