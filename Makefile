@@ -93,7 +93,7 @@ read:
 	st-flash read $(TARGET) 0x8000000 0x100
 
 uart:
-	screen /dev/ttyACM0
+	screen /dev/ttyACM0 115200
 
 # should be tested flashst
 flashst: all
