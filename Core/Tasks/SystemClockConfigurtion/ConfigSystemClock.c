@@ -31,7 +31,10 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
-
+#define PLLN 90
+#define PLLM 8
+#define PLLQ 4
+#define PLLR 4
 /* Private macro -------------------------------------------------------------*/
 
 /* Private variables ---------------------------------------------------------*/
@@ -42,7 +45,7 @@ static void InitBusesClock(void);
 /* External variables --------------------------------------------------------*/
 
 /*
- * @brief: configure PLL with 180MHz as system clock
+ * @brief: configure PLL with 90MHz as system clock
  * @note:
  * @retval none
  * */
@@ -51,25 +54,22 @@ static void InitSystemClock(void) {
   RCC->CR &= ~RCC_CR_PLLON;
 
   /* select HSI as clock input for PLL */
-  RCC->PLLCFGR |= RCC_PLLCFGR_PLLSRC_HSI;
+  RCC->PLLCFGR &= ~RCC_PLLCFGR_PLLSRC;
 
   /* start configuring pll calculated values */
   // TODO: could make function to select the best values automatically?
-  /* to get 180MHz as output it should be chosen as follows
-   * PLLN = 360 = 0x168
-   * PLLM = 16 = 0x10
-   * PPLP = 2 = 0x2
-   * */
-  RCC->PLLCFGR &= ~(RCC_PLLCFGR_PLLN);  // Reset all old configuration
-  RCC->PLLCFGR |= (RCC_PLLCFGR_PLLN_3 | RCC_PLLCFGR_PLLN_5 |
-                   RCC_PLLCFGR_PLLN_6 | RCC_PLLCFGR_PLLN_8);
-  // RCC->PLLCFGR |= (360 << RCC_PLLCFGR_PLLN_Pos);
+  /* Reset all old configuration */
+  RCC->PLLCFGR &= ~(RCC_PLLCFGR_PLLN | RCC_PLLCFGR_PLLM | RCC_PLLCFGR_PLLP);
 
-  RCC->PLLCFGR &= ~RCC_PLLCFGR_PLLM;  // Reset all old configuration
-  RCC->PLLCFGR |= RCC_PLLCFGR_PLLM_4;
-  // RCC->PLLCFGR |= 16 << RCC_PLLCFGR_PLLM_Pos;
+  RCC->PLLCFGR |= (PLLN << RCC_PLLCFGR_PLLN_Pos);
+  RCC->PLLCFGR |= (PLLM << RCC_PLLCFGR_PLLM_Pos);
+  RCC->PLLCFGR &= ~RCC_PLLCFGR_PLLP;
 
-  RCC->PLLCFGR &= ~RCC_PLLCFGR_PLLP;  // Reset all old configuration
+  // /* enable pwd unit if clk 180MHz, the regulator voltage should be enable */
+  // RCC->APB1ENR |= RCC_APB1ENR_PWREN;
+  // /* Regulator voltage scaling output selection, Scale 1 mode (reset value)
+  //  */
+  // PWR->CR |= PWR_CR_VOS;
 
   /* turn PLL on */
   RCC->CR |= RCC_CR_PLLON;
@@ -79,7 +79,7 @@ static void InitSystemClock(void) {
   };
 
   /* switch to PLL*/
-  RCC->CFGR |= RCC_CFGR_SW_HSI;
+  RCC->CFGR &= ~RCC_CFGR_SW;
   RCC->CFGR |= RCC_CFGR_SW_PLL;
 
   /* wait until switching to PLL */
@@ -90,20 +90,21 @@ static void InitSystemClock(void) {
 static void InitBusesClock(void) {
   /* select the division factor for I2Ss, SAIs, SYSTEM and SPDIF-Rx clocks
    * driven by PLL clock */
-  RCC->PLLCFGR |= RCC_PLLCFGR_PLLR_1;  // divided by 2
+  RCC->PLLCFGR |= (PLLR << RCC_PLLCFGR_PLLR_Pos);
 
   /* division factor for USB OTG FS, SDIOclocks */
-  RCC->PLLCFGR |= RCC_PLLCFGR_PLLQ_2;  // divided by 2
-  /* AHB bus, system clock divided by 4 */
-  RCC->CFGR |= RCC_CFGR_HPRE_DIV4;
+  RCC->PLLCFGR |= (PLLQ << RCC_PLLCFGR_PLLQ_Pos);
 
-  /* PPRE1 bus AHB clock divided by 4 to get the maximum with 45MHz, if pll is
-   * used otherwise, the HSI is used with 16MHz. so 8MHz */
-  RCC->CFGR |= RCC_CFGR_PPRE1_DIV2;
+  /* AHB bus, system clock divided by 2 --> 45 */
+  RCC->CFGR |= RCC_CFGR_HPRE_DIV2;
 
-  /* PPRE2 (high speed) bus AHB clock divided by 2 to get the maximum with 90MHz
-   * if pll is used otherwise, the HSI is used with 16MHz. so 8MHz */
-  RCC->CFGR |= RCC_CFGR_PPRE1_DIV4;
+  /* APB2---> PPRE2 (high speed) bus AHB clock divided by 2 to get the maximum
+   * with 45MHz if pll is used otherwise, the HSI is used with 16MHz */
+  RCC->CFGR |= RCC_CFGR_PPRE2_DIV1;
+
+  /* APB1 ---> PPRE1 bus AHB clock divided by 1 to get the maximum with 45MHz,
+   * if pll is used otherwise, the HSI is used with 16MHz. */
+  RCC->CFGR |= RCC_CFGR_PPRE1_DIV1;
 }
 
 void InitMainSysClock(void) {
