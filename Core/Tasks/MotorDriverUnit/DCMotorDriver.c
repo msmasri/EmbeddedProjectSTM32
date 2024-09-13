@@ -40,7 +40,7 @@ extern "C" {
 
 /* Private define ------------------------------------------------------------*/
 /* 		f_ck_PRS				45MHz
- *--------------------------=----------- = 1MHz
+ *-----------------=--------= 1MHz
  *		PRS[15:0] + 1			45
  */
 #define PRE_SCALE_VALUE 0x6
@@ -48,10 +48,11 @@ extern "C" {
 #define COMPARE_VALUE (AUTO_RELOAD_VALUE / 2)  // for 50% duty cycle
 
 /* Private macro -------------------------------------------------------------*/
+#define NUMBER_OF_DATA_ITEMS 2
 
 /* Private variables ---------------------------------------------------------*/
 static motorData_type measuredMotorPWM;
-#define NUMBER_OF_DATA_ITEMS 2
+
 /* Private function prototypes -----------------------------------------------*/
 static void InitGPIOMotorDriver(void);
 static void InitPWMEncoderDriver(void);
@@ -178,9 +179,7 @@ static void InitGPIOEncoderDriver(void) {
 static void InitPWMEncoderDriver(void) {
   /* enable timer 3 */
   RCC->APB1ENR |= RCC_APB1ENR_TIM3EN;
-  //
-  // TODO: should set the value of the pre-scale and auto-compare and autoreload
-  // to get 50 Hz
+
   TIM3->PSC = PRE_SCALE_VALUE;
 
   /* set the auto-reload value*/
@@ -246,7 +245,7 @@ static void InitPWMEncoderDriver(void) {
 }
 // DMA1, channel 5 stream 4 for TIM3_CH1
 static void InitDMAEncoderDriver(void) {
-  /*enable DMA1 port*/
+  /* enable DMA1 port*/
   RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN;
 
   /* select channel 5 */
