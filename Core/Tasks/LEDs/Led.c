@@ -1,12 +1,12 @@
 /*******************************************************************************
  * @file    Led.c
  * @author  sari
- * @email   
- * @website 
+ * @email
+ * @website
  * @date    Aug 16, 2024
- *          
- * @brief   
- * @note    
+ *
+ * @brief
+ * @note
  *
  @verbatim
  Copyright (C) on GitHub msmasri/stm32project, 2024
@@ -45,64 +45,49 @@ static void InitLed(void);
  * @note: GPIOA on AHB1 bus
  * 				PIN--> 5
  * @retval none */
-static void InitLed(void)
-{
-	/* Enable port A*/
-	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
+static void InitLed(void) {
+  /* Enable port A*/
+  RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
 
-	/* select output mode */
-	GPIOA->MODER |= GPIO_MODER_MODE5_0;
-	GPIOA->MODER &= ~GPIO_MODER_MODE5_1;
+  /* select output mode */
+  GPIOA->MODER |= GPIO_MODER_MODE5_0;
+  GPIOA->MODER &= ~GPIO_MODER_MODE5_1;
 
-	/* Output type Output open-drain */
-	GPIOA->OTYPER &= ~GPIO_OTYPER_OT5;
+  /* Output type Output open-drain */
+  GPIOA->OTYPER &= ~GPIO_OTYPER_OT5;
 
-	/* Output speed medium*/
-	GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR5_0;
-	GPIOA->OSPEEDR &= ~GPIO_OSPEEDER_OSPEEDR5_1;
+  /* Output speed medium*/
+  GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR5_0;
+  GPIOA->OSPEEDR &= ~GPIO_OSPEEDER_OSPEEDR5_1;
 
-	/* Pull-up/Down UP*/
-	GPIOA->PUPDR |= GPIO_PUPDR_PUPD5_0;
-	GPIOA->PUPDR &= ~GPIO_PUPDR_PUPD5_1;
+  /* Pull-up/Down UP*/
+  GPIOA->PUPDR |= GPIO_PUPDR_PUPD5_0;
+  GPIOA->PUPDR &= ~GPIO_PUPDR_PUPD5_1;
 
-	/**************************** Optional *************************************/
-	/* lock configuration */
+  /**************************** Optional *************************************/
+  /* lock configuration */
 }
 
 /**
  * @brief User function to turn led on
  * @note:
  * @retval none */
-void SetLed(void)
-{
-	GPIOA->ODR |= GPIO_ODR_OD5;
-
-}
+void SetLed(void) { GPIOA->ODR |= GPIO_ODR_OD5; }
 
 /**
  * @brief User function to turn led off
  * @note:
  * @retval none */
-void ResetLed(void)
-{
-	GPIOA->ODR &= ~GPIO_ODR_OD5;
-}
+void ResetLed(void) { GPIOA->ODR &= ~GPIO_ODR_OD5; }
 
 /**
  * @brief User function to toggle led
  * @note:
  * @retval none */
-void Toggle(void)
-{
-	GPIOA->ODR ^= GPIO_ODR_OD5;
-
-}
+void Toggle(void) { GPIOA->ODR ^= GPIO_ODR_OD5; }
 
 /**
  * @brief Initialize Led on the board STM32F446RE in main.c
  * @note:
  * @retval none */
-void InitMainLed(void)
-{
-	InitLed();
-}
+void InitMainLed(void) { InitLed(); }

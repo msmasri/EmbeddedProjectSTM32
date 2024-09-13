@@ -99,13 +99,13 @@ static void ConfigMCO1(void) {
   /* divided by 4 */
   RCC->CFGR |= (RCC_CFGR_MCO1PRE_1 | RCC_CFGR_MCO1PRE_2);
   RCC->CFGR &= ~RCC_CFGR_MCO1PRE_0;
-  //   RCC->CFGR |= RCC_CFGR_MCO1PRE;
+  RCC->CFGR |= RCC_CFGR_MCO1PRE;
 
   /* PLL clock selected */
   // TODO: Clock source selection may generate glitches on MCO1. It is
   // highly recommended to configure these bits only after reset before enabling
   // the external oscillators and PLL
-  //   RCC->CFGR &= ~RCC_CFGR_MCO1;  // HSI
+  // RCC->CFGR &= ~RCC_CFGR_MCO1;  // HSI
   RCC->CFGR |= RCC_CFGR_MCO1;  // PLL
 }
 
@@ -119,7 +119,7 @@ static void ConfigMCO2(void) {
   // TODO: Clock source selection may generate glitches on MCO1. It is
   // highly recommended to configure these bits only after reset before enabling
   // the external oscillators and PLL
-  //   RCC->CFGR &= ~RCC_CFGR_MCO2;  // System clock (SYSCLK)
+  // RCC->CFGR &= ~RCC_CFGR_MCO2;  // System clock (SYSCLK)
   RCC->CFGR |= RCC_CFGR_MCO2;  // PLL
 }
 
