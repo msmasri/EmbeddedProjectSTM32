@@ -38,9 +38,9 @@ extern "C" {
 
 /* Private typedef -----------------------------------------------------------*/
 typedef struct {
-  uint16_t DutyCycle;
-  uint16_t Period;
-} PWM_Buffer_Type;
+  uint16_t dutyCycle;
+  uint16_t period;
+} motorData_type;
 /* Private define ------------------------------------------------------------*/
 
 /* Private macro -------------------------------------------------------------*/

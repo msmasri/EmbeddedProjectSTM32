@@ -39,19 +39,18 @@ extern "C" {
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
-/* 							f_ck_PRS
- *45MHz
+/* 		f_ck_PRS				45MHz
  *--------------------------=----------- = 1MHz
- *						PRS[15:0] + 1 45
+ *		PRS[15:0] + 1			45
  */
-#define PRE_SCALE_VALUE 0x2C
+#define PRE_SCALE_VALUE 0x6
 #define AUTO_RELOAD_VALUE 0xFFFF
 #define COMPARE_VALUE (AUTO_RELOAD_VALUE / 2)  // for 50% duty cycle
 
 /* Private macro -------------------------------------------------------------*/
 
 /* Private variables ---------------------------------------------------------*/
-static PWM_Buffer_Type dutyCycle;
+static motorData_type measuredMotorPWM;
 #define NUMBER_OF_DATA_ITEMS 2
 /* Private function prototypes -----------------------------------------------*/
 static void InitGPIOMotorDriver(void);
@@ -271,7 +270,7 @@ static void InitDMAEncoderDriver(void) {
   DMA1_Stream4->PAR = (uint32_t)(&(TIM3->DMAR));
 
   /* memory address */
-  DMA1_Stream4->M0AR = (uint32_t)(&dutyCycle);
+  DMA1_Stream4->M0AR = (uint32_t)(&measuredMotorPWM);
 
   /* direction is peripheral to memory */
   DMA1_Stream4->CR &= ~DMA_SxCR_DIR;
